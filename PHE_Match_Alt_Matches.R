@@ -16,7 +16,16 @@ source("addcaliper.R")
 ###############################Pair Match###############################
 
 #Estimate p-score
-p <- glm(treat ~ mj_use + drink30d + drink5 + drugb_past30 + partner_num + sex_yesno + sex_know + coc_know + drugb_past30_type + sex_safe + dec_making + frpl + health_know + black + mulrace + white + hispanic + stu_gender + healthy_eating + active_num + dis_504 + dis_e + dis_ld + mj_use_miss + drink30d_miss + drink5_miss + partner_num_miss + sex_yesno_miss + sex_know_miss + coc_know_miss + sex_safe_miss + dec_making_miss + frpl_miss + health_know_miss + healthy_eating_miss + active_num_miss, data=data, family=binomial)$fitted.values
+p <- glm(treat ~ mj_use + drink30d + drink5 + drugb_past30 + partner_num 
+         +sex_yesno + sex_know + coc_know + drugb_past30_type 
+         + sex_safe + dec_making + frpl + health_know + black 
+         + mulrace + white + hispanic + stu_gender 
+         + healthy_eating + active_num + dis_504 + dis_e 
+         + dis_ld + mj_use_miss + drink30d_miss + drink5_miss 
+         + partner_num_miss + sex_yesno_miss + sex_know_miss 
+         + coc_know_miss + sex_safe_miss + dec_making_miss 
+         + frpl_miss + health_know_miss + healthy_eating_miss 
+         + active_num_miss, data=data, family=binomial)$fitted.values
 
 
 #Caliper setting - Std Dev of P Score Divided By 2 Rule of Thumb From Rosenbaum
@@ -40,12 +49,14 @@ summary(pm)
 stratumStructure(pm)
 
 #Check Balance - Using Function from RITools
-bal.pm <- xBalance(treat ~ black + mulrace + white + hispanic + stu_gender + dis_504 + dis_e + dis_ld + frpl + mj_use + drink30d + drink5 + drugb_past30 + drugb_past30_type + partner_num + sex_yesno + sex_know + coc_know + sex_safe + dec_making + health_know +  healthy_eating + active_num + mj_use_miss + drink30d_miss + drink5_miss + partner_num_miss + sex_yesno_miss + sex_know_miss + coc_know_miss + sex_safe_miss + dec_making_miss + health_know_miss + healthy_eating_miss + active_num_miss, data = data, report= c("std.diffs", "adj.means", "z.scores"), strata = data.frame(original = factor("none"), pm))
+bal.pm <- xBalance(treat ~ black + mulrace + white + hispanic 
+                   + stu_gender + dis_504 + dis_e + dis_ld + frpl 
+                   + mj_use + drink30d + drink5 + drugb_past30 + drugb_past30_type + partner_num + sex_yesno + sex_know + coc_know + sex_safe + dec_making + health_know +  healthy_eating + active_num + mj_use_miss + drink30d_miss + drink5_miss + partner_num_miss + sex_yesno_miss + sex_know_miss + coc_know_miss + sex_safe_miss + dec_making_miss + health_know_miss + healthy_eating_miss + active_num_miss, data = data, report= c("std.diffs", "adj.means", "z.scores"), strata = data.frame(original = factor("none"), pm))
 
 names <- c("African American 1/0", "Multi-Racial 1/0", "White 1/0", 
-"Hispanic 1/0","Female 1/0", "Disability type 1 1/0", "Disability type 2 1/0", "Disability type 3 1/0", "Free or reduced price lunch 1/0", "Marijuana use 1/0", "Drunk in past 30 days 1/0", "5 or more drinks in past 30 days",  "Drug use past 30 days",
-"Type of drugs used", "Number of sexual partners",  "Ever had sex 1/0", "Understand cause of pregnancy 1/0", "Can obtain contraception 1/0", "Perception of sex safety", "Decision-making skill", "Knowledge of healthy eating", "Number of times eating healthy", "Number of days physically active", "Marijuana missing 1/0", "Drinking 30 missing 1/0", "Drink 5 missing 1/0", "Sex partners missing 1/0", "Had sex missing 1/0", "Pregnancy Missing 1/0", "Contraception missing 1/0",
-"Sex safe missing 1/0",  "Decision-making missing", "Eating knowledge missing",  "Healthy eating missing 1/0", "Active missing 1/0")
+           "Hispanic 1/0","Female 1/0", "Disability type 1 1/0", "Disability type 2 1/0", "Disability type 3 1/0", "Free or reduced price lunch 1/0", "Marijuana use 1/0", "Drunk in past 30 days 1/0", "5 or more drinks in past 30 days",  "Drug use past 30 days",
+           "Type of drugs used", "Number of sexual partners",  "Ever had sex 1/0", "Understand cause of pregnancy 1/0", "Can obtain contraception 1/0", "Perception of sex safety", "Decision-making skill", "Knowledge of healthy eating", "Number of times eating healthy", "Number of days physically active", "Marijuana missing 1/0", "Drinking 30 missing 1/0", "Drink 5 missing 1/0", "Sex partners missing 1/0", "Had sex missing 1/0", "Pregnancy Missing 1/0", "Contraception missing 1/0",
+           "Sex safe missing 1/0",  "Decision-making missing", "Eating knowledge missing",  "Healthy eating missing 1/0", "Active missing 1/0")
 
 #print(bal.pm, show.pvals=TRUE)
 
